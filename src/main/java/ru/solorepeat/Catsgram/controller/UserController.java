@@ -21,10 +21,10 @@ public class UserController {
 
     @PostMapping
     public User create(@RequestBody User user) {
-        if(user.getEmail() == null || user.getEmail().isBlank()) {
+        if (user.getEmail() == null || user.getEmail().isBlank()) {
             throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
         }
-        if(users.containsKey(user.getEmail())) {
+        if (users.containsKey(user.getEmail())) {
             throw new UserAlreadyExistException("Пользователь с электронной почтой " +
                     user.getEmail() + " уже зарегистрирован.");
         }
@@ -34,7 +34,7 @@ public class UserController {
 
     @PutMapping
     public User put(@RequestBody User user) {
-        if(user.getEmail() == null || user.getEmail().isBlank()) {
+        if (user.getEmail() == null || user.getEmail().isBlank()) {
             throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
         }
         users.put(user.getEmail(), user);
