@@ -7,6 +7,11 @@ public class ClassicalMusic implements Music {
      */
     private ClassicalMusic() {}
 
+    /**
+     * несмотря на  создание с помощью new объект будет создаваться 1 раз,
+     * т.к. scope по умолчанию singleton и все вызовы метода getBean будут получать ссылку на единственный объект
+     * @return Объект ClassicalMusic
+     */
     public static ClassicalMusic getClassicalMusic() {
         return new ClassicalMusic();
     }
