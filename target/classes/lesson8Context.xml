@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:lesson8.properties"/>
+
+    <bean id="musicBean"
+          class="alishevSpringFramework.lesson8BeanLifeCycle.ClassicalMusic"
+          init-method="doMyInit"
+          destroy-method="doMyDestroy"
+          factory-method="getClassicalMusic">
+    </bean>
+
+    <!--    <bean id="musicBean2"-->
+    <!--          class="alishevSpringFramework.lesson8BeanLifeCycle.RockMusic">-->
+    <!--    </bean>-->
+
+    <!--    <bean id="musicBean3"-->
+    <!--          class="alishevSpringFramework.lesson8BeanLifeCycle.JazzMusic">-->
+    <!--    </bean>-->
+
+    <!--    <bean id="musicPlayer"-->
+    <!--          class="alishevSpringFramework.lesson8BeanLifeCycle.MusicPlayer"-->
+    <!--          scope="prototype">-->
+    <!--        <property name="musicList">-->
+    <!--            <list>-->
+    <!--                <ref bean="musicBean1"/>-->
+    <!--                <ref bean="musicBean2"/>-->
+    <!--                <ref bean="musicBean3"/>-->
+    <!--            </list>-->
+    <!--        </property>-->
+
+    <!--        <property name="name" value="${musicPlayer.name}"/>-->
+    <!--        <property name="volume" value="${musicPlayer.volume}"/>-->
+    <!--    </bean>-->
+
+</beans>
