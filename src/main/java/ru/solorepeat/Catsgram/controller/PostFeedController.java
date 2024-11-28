@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.solorepeat.Catsgram.exceptions.IncorrectParameterException;
 import ru.solorepeat.Catsgram.model.FeedParams;
 import ru.solorepeat.Catsgram.model.Post;
 import ru.solorepeat.Catsgram.service.PostService;
@@ -13,7 +14,7 @@ import java.util.List;
 
 import static ru.solorepeat.Catsgram.Constants.SORTS;
 
-@RestController
+@RestController()
 @RequestMapping("/feed/friends")
 public class PostFeedController {
 
@@ -25,11 +26,14 @@ public class PostFeedController {
 
     @PostMapping
     List<Post> getFriendsFeed(@RequestBody FeedParams feedParams) {
-        if (!SORTS.contains(feedParams.getSort()) || feedParams.getFriendsEmails().isEmpty()) {
-            throw new IllegalArgumentException();
+        if (!SORTS.contains(feedParams.getSort())) {
+            throw new IncorrectParameterException("sort");
         }
         if (feedParams.getSize() == null || feedParams.getSize() <= 0) {
-            throw new IllegalArgumentException();
+            throw new IncorrectParameterException("size");
+        }
+        if (feedParams.getFriendsEmails().isEmpty()) {
+            throw new IncorrectParameterException("friendsEmails");
         }
 
         List<Post> result = new ArrayList<>();

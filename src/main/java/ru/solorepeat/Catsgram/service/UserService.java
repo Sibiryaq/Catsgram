@@ -1,6 +1,5 @@
 package ru.solorepeat.Catsgram.service;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.solorepeat.Catsgram.exceptions.InvalidEmailException;
 import ru.solorepeat.Catsgram.exceptions.UserAlreadyExistException;
