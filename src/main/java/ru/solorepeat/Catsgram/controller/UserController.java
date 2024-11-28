@@ -1,49 +1,72 @@
 package ru.solorepeat.Catsgram.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import ru.solorepeat.Catsgram.exceptions.InvalidEmailException;
-import ru.solorepeat.Catsgram.exceptions.UserAlreadyExistException;
+import ru.solorepeat.Catsgram.model.Post;
 import ru.solorepeat.Catsgram.model.User;
+import ru.solorepeat.Catsgram.service.UserService;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    Logger log = LoggerFactory.getLogger(UserController.class);
-    private final Map<String, User> users = new HashMap<>();
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public Collection<User> findAll() {
-        log.info("Текущее количество пользователей: {}", users.size());
-        return users.values();
+        return userService.findAll();
     }
 
     @PostMapping
-    public User create(@RequestBody User user) {
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
-        }
-        if (users.containsKey(user.getEmail())) {
-            throw new UserAlreadyExistException("Пользователь с электронной почтой " +
-                    user.getEmail() + " уже зарегистрирован.");
-        }
-        users.put(user.getEmail(), user);
-        return user;
+    public User createUser(@RequestBody User user) {
+        return userService.create(user);
     }
 
     @PutMapping
-    public User put(@RequestBody User user) {
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
-        }
-        users.put(user.getEmail(), user);
-
-        return user;
+    public User updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
     }
+
+    @GetMapping("users/{userMail}")
+    public User findUserByEmail(@PathVariable String userMail) {
+        return userService.findUserByEmail(userMail);
+    }
+
+    @GetMapping("/users/{userId}/posts/list")
+    public List<Post> listPosts(
+            @PathVariable String userId,
+            @RequestParam @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate from,
+            @RequestParam @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate to
+    ) {
+        System.out.println("Ищем посты пользователя " + userId +
+                " с даты " + from.toString() + " по дату " + to.toString());
+        // ... опустим логику поиска
+        // .../users/777/posts/list?from=01.01.2020&to=12.03.2020
+        return new ArrayList<Post>();
+    }
+
+    /*
+    для пользователя в запросе будет /api/foos?id=777
+    но для себя для понимания что это fooId, мы используем
+    @RequestParam(name = "id") String fooId
+
+
+    @PostMapping("/api/foos")
+    @ResponseBody
+    public String addFoo(@RequestParam(name = "id") String fooId, @RequestParam String name) {
+        return "ID: " + fooId + " Name: " + name;
+    }
+     */
+
 }
 
