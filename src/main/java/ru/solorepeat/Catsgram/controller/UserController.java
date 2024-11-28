@@ -29,7 +29,7 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestBody User user) {
-        return userService.create(user);
+        return userService.createUser(user);
     }
 
     @PutMapping
@@ -52,7 +52,7 @@ public class UserController {
                 " с даты " + from.toString() + " по дату " + to.toString());
         // ... опустим логику поиска
         // .../users/777/posts/list?from=01.01.2020&to=12.03.2020
-        return new ArrayList<Post>();
+        return new ArrayList<>();
     }
 
     /*

@@ -10,32 +10,28 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
 @Service
 public class UserService {
     private final Map<String, User> users = new HashMap<>();
 
     public Collection<User> findAll() {
-        log.info("Текущее количество пользователей: {}", users.size());
         return users.values();
     }
 
-    public User create(User user) {
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
-        }
+    public User createUser(User user) {
+        checkEmail(user);
         if (users.containsKey(user.getEmail())) {
-            throw new UserAlreadyExistException("Пользователь с электронной почтой " +
-                    user.getEmail() + " уже зарегистрирован.");
+            throw new UserAlreadyExistException(String.format(
+                    "Пользователь с электронной почтой %s уже зарегистрирован.",
+                    user.getEmail()
+            ));
         }
         users.put(user.getEmail(), user);
         return user;
     }
 
     public User updateUser(User user) {
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
-        }
+        checkEmail(user);
         users.put(user.getEmail(), user);
 
         return user;
@@ -43,9 +39,14 @@ public class UserService {
 
     public User findUserByEmail(String email) {
         if (email == null) {
-           return null;
+            return null;
         }
         return users.get(email);
     }
 
+    private void checkEmail(User user) {
+        if (user.getEmail() == null || user.getEmail().isBlank()) {
+            throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
+        }
+    }
 }
