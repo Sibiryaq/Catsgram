@@ -9,6 +9,7 @@ import ru.solorepeat.Catsgram.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ru.solorepeat.Catsgram.Constants.DESCENDING_ORDER;
@@ -26,9 +27,11 @@ public class PostService {
     }
 
     public Post create(Post post) {
-        User postAuthor = userService.findUserByEmail(post.getAuthor());
-        if (postAuthor == null) {
-            throw new UserNotFoundException(String.format("Пользователь %s не найден", post.getAuthor()));
+        Optional<User> postAuthor = userService.findUserById(post.getAuthor());
+        if (postAuthor.isEmpty()) {
+            throw new UserNotFoundException(String.format(
+                    "Пользователь %s не найден",
+                    post.getAuthor()));
         }
 
         post.setId(getNextId());

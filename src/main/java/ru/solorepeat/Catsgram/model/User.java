@@ -1,27 +1,34 @@
 package ru.solorepeat.Catsgram.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import java.time.LocalDate;
-
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
 public class User {
-    @EqualsAndHashCode.Include
-    private String email;
-    @EqualsAndHashCode.Exclude
+    private String id;
+    private String username;
     private String nickname;
-    @EqualsAndHashCode.Exclude
-    private LocalDate birthdate;
 
-    public User(String email, String nickname, LocalDate birthdate) {
-        this.email = email;
+    public User() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
         this.nickname = nickname;
-        this.birthdate = birthdate;
     }
 }
